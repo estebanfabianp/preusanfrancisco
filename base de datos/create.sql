@@ -1,0 +1,149 @@
+# ---------------------------------------------------------------------- #
+# Script generated with: DeZign for Databases V8.1.2                     #
+# Target DBMS:           MySQL 5                                         #
+# Project file:          Project2.dez                                    #
+# Project name:                                                          #
+# Author:                                                                #
+# Script type:           Database creation script                        #
+# Created on:            2021-01-14 23:34                                #
+# ---------------------------------------------------------------------- #
+
+
+# ---------------------------------------------------------------------- #
+# Add tables                                                             #
+# ---------------------------------------------------------------------- #
+
+# ---------------------------------------------------------------------- #
+# Add table "estudiante"                                                 #
+# ---------------------------------------------------------------------- #
+
+CREATE TABLE `estudiante` (
+    `cedula` INTEGER(10) NOT NULL,
+    `nombre` VARCHAR(40),
+    `apellido` VARCHAR(40),
+    `telefono` VARCHAR(40),
+    `fechaNacimiento` DATE,
+    `Celular` INTEGER,
+    `tipoDocumento` VARCHAR(40),
+    `valor de matricula` INTEGER,
+    `descuento` INTEGER,
+    CONSTRAINT `PK_estudiante` PRIMARY KEY (`cedula`)
+);
+
+# ---------------------------------------------------------------------- #
+# Add table "nota"                                                       #
+# ---------------------------------------------------------------------- #
+
+CREATE TABLE `nota` (
+    `id_nota` INTEGER NOT NULL AUTO_INCREMENT,
+    `nota` VARCHAR(40),
+    `valor` INTEGER,
+    CONSTRAINT `PK_nota` PRIMARY KEY (`id_nota`)
+);
+
+# ---------------------------------------------------------------------- #
+# Add table "Cargo"                                                      #
+# ---------------------------------------------------------------------- #
+
+CREATE TABLE `Cargo` (
+    `Id_cargo` INTEGER NOT NULL AUTO_INCREMENT,
+    `nombreCargo` VARCHAR(40),
+    `salario` INTEGER,
+    CONSTRAINT `PK_Cargo` PRIMARY KEY (`Id_cargo`)
+);
+
+# ---------------------------------------------------------------------- #
+# Add table "ingreso"                                                    #
+# ---------------------------------------------------------------------- #
+
+CREATE TABLE `ingreso` (
+    `id_ingreso` INTEGER,
+    `cedula` INTEGER(10),
+    `tipoIngreso` VARCHAR(40)
+);
+
+# ---------------------------------------------------------------------- #
+# Add table "Personal"                                                   #
+# ---------------------------------------------------------------------- #
+
+CREATE TABLE `Personal` (
+    `identificacion` INTEGER NOT NULL,
+    `nombre` VARCHAR(40),
+    `apellido` VARCHAR(40),
+    `telefono` INTEGER,
+    `celular` INTEGER,
+    `tipoIdentificacion` VARCHAR(40),
+    `Id_cargo` INTEGER,
+    CONSTRAINT `PK_Personal` PRIMARY KEY (`identificacion`)
+);
+
+# ---------------------------------------------------------------------- #
+# Add table "Curso"                                                      #
+# ---------------------------------------------------------------------- #
+
+CREATE TABLE `Curso` (
+    `cedula` INTEGER(10) NOT NULL,
+    `horario` VARCHAR(40),
+    `identificacion` INTEGER NOT NULL
+);
+
+# ---------------------------------------------------------------------- #
+# Add table "materia"                                                    #
+# ---------------------------------------------------------------------- #
+
+CREATE TABLE `materia` (
+    `id_materia` INTEGER AUTO_INCREMENT,
+    `id_nota` INTEGER NOT NULL,
+    `notaFinal` INTEGER,
+    `habilitacion` INTEGER,
+    `nombreMateria` VARCHAR(40),
+    `identificacion` INTEGER NOT NULL,
+    CONSTRAINT `PK_materia` PRIMARY KEY (`identificacion`)
+);
+
+# ---------------------------------------------------------------------- #
+# Add table "egreso"                                                     #
+# ---------------------------------------------------------------------- #
+
+CREATE TABLE `egreso` (
+    `id_egreso` INTEGER AUTO_INCREMENT,
+    `nombre` VARCHAR(40),
+    `valor` INTEGER,
+    `fecha` DATETIME,
+    `fechaCre` DATE,
+    `usuario` VARCHAR(40),
+    `perido` VARCHAR(40) COMMENT 'indica si es un  pago F , Recuernte',
+    `dia` INTEGER,
+    `frecuencia` VARCHAR(40) COMMENT 'indica si es diario , mesual o anual ',
+    `identificacion` INTEGER
+);
+
+# ---------------------------------------------------------------------- #
+# Add table "nomina"                                                     #
+# ---------------------------------------------------------------------- #
+
+CREATE TABLE `nomina` (
+    `id_nomina` INTEGER AUTO_INCREMENT
+);
+
+# ---------------------------------------------------------------------- #
+# Add foreign key constraints                                            #
+# ---------------------------------------------------------------------- #
+
+ALTER TABLE `Personal` ADD CONSTRAINT `Cargo_Personal` 
+    FOREIGN KEY (`Id_cargo`) REFERENCES `Cargo` (`Id_cargo`);
+
+ALTER TABLE `Curso` ADD CONSTRAINT `estudiante_Curso` 
+    FOREIGN KEY (`cedula`) REFERENCES `estudiante` (`cedula`);
+
+ALTER TABLE `Curso` ADD CONSTRAINT `Personal_Curso` 
+    FOREIGN KEY (`identificacion`) REFERENCES `Personal` (`identificacion`);
+
+ALTER TABLE `materia` ADD CONSTRAINT `nota_materia` 
+    FOREIGN KEY (`id_nota`) REFERENCES `nota` (`id_nota`);
+
+ALTER TABLE `ingreso` ADD CONSTRAINT `estudiante_ingreso` 
+    FOREIGN KEY (`cedula`) REFERENCES `estudiante` (`cedula`);
+
+ALTER TABLE `egreso` ADD CONSTRAINT `Personal_egreso` 
+    FOREIGN KEY (`identificacion`) REFERENCES `Personal` (`identificacion`);
