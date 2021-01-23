@@ -5,7 +5,7 @@
 # Project name:                                                          #
 # Author:                                                                #
 # Script type:           Database drop script                            #
-# Created on:            2021-01-19 20:23                                #
+# Created on:            2021-01-19 20:52                                #
 # ---------------------------------------------------------------------- #
 
 
@@ -16,8 +16,6 @@
 ALTER TABLE `estudiante` DROP FOREIGN KEY `colegio_estudiante`;
 
 ALTER TABLE `estudiante` DROP FOREIGN KEY `barrio_estudiante`;
-
-ALTER TABLE `estudiante` DROP FOREIGN KEY `Check_list_estudiante`;
 
 ALTER TABLE `Personal` DROP FOREIGN KEY `Cargo_Personal`;
 
@@ -52,6 +50,10 @@ ALTER TABLE `matricula_asistencia` DROP FOREIGN KEY `matricula_matricula_asisten
 ALTER TABLE `matricula_asistencia` DROP FOREIGN KEY `asistencia_matricula_asistencia`;
 
 ALTER TABLE `pagos` DROP FOREIGN KEY `matricula_pagos`;
+
+ALTER TABLE `Check_list_estudiante` DROP FOREIGN KEY `Check_list_Check_list_estudiante`;
+
+ALTER TABLE `Check_list_estudiante` DROP FOREIGN KEY `estudiante_Check_list_estudiante`;
 
 # ---------------------------------------------------------------------- #
 # Drop table "matricula_asistencia"                                      #
@@ -144,6 +146,20 @@ ALTER TABLE `Curso` MODIFY `idCurso` INTEGER NOT NULL;
 ALTER TABLE `Curso` DROP PRIMARY KEY;
 
 DROP TABLE `Curso`;
+
+# ---------------------------------------------------------------------- #
+# Drop table "Check_list_estudiante"                                     #
+# ---------------------------------------------------------------------- #
+
+# Remove autoinc for PK drop #
+
+ALTER TABLE `Check_list_estudiante` MODIFY `id_chec_estudiante` INTEGER NOT NULL;
+
+# Drop constraints #
+
+ALTER TABLE `Check_list_estudiante` DROP PRIMARY KEY;
+
+DROP TABLE `Check_list_estudiante`;
 
 # ---------------------------------------------------------------------- #
 # Drop table "pagos"                                                     #

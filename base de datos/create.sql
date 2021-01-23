@@ -5,7 +5,7 @@
 # Project name:                                                          #
 # Author:                                                                #
 # Script type:           Database creation script                        #
-# Created on:            2021-01-19 20:23                                #
+# Created on:            2021-01-19 20:52                                #
 # ---------------------------------------------------------------------- #
 
 
@@ -116,13 +116,12 @@ CREATE TABLE `estudiante` (
     `correo` VARCHAR(40),
     `ultimoCurso` INTEGER COMMENT 'ultimo curso aprobado',
     `telefonoAcudiente` INTEGER,
-    `año` DATE COMMENT 'en que año curso el ultimo curo',
+    `year` DATE COMMENT 'en que año curso el ultimo curo',
     `observacion` TEXT,
     `id_colegio` INTEGER,
     `localidad` VARCHAR(40),
     `upz` VARCHAR(40),
     `barrio` VARCHAR(40),
-    `id_check` INTEGER NOT NULL,
     CONSTRAINT `PK_estudiante` PRIMARY KEY (`id_estudiante`)
 );
 
@@ -183,6 +182,17 @@ CREATE TABLE `pagos` (
     `fecha` DATE,
     `Concepto` VARCHAR(40),
     CONSTRAINT `PK_pagos` PRIMARY KEY (`id_pagos`)
+);
+
+# ---------------------------------------------------------------------- #
+# Add table "Check_list_estudiante"                                      #
+# ---------------------------------------------------------------------- #
+
+CREATE TABLE `Check_list_estudiante` (
+    `id_check` INTEGER NOT NULL,
+    `id_estudiante` INTEGER NOT NULL,
+    `id_chec_estudiante` INTEGER NOT NULL AUTO_INCREMENT,
+    CONSTRAINT `PK_Check_list_estudiante` PRIMARY KEY (`id_check`, `id_estudiante`, `id_chec_estudiante`)
 );
 
 # ---------------------------------------------------------------------- #
@@ -275,9 +285,6 @@ ALTER TABLE `estudiante` ADD CONSTRAINT `colegio_estudiante`
 ALTER TABLE `estudiante` ADD CONSTRAINT `barrio_estudiante` 
     FOREIGN KEY (`localidad`, `upz`, `barrio`) REFERENCES `barrio` (`localidad`,`upz`,`barrio`);
 
-ALTER TABLE `estudiante` ADD CONSTRAINT `Check_list_estudiante` 
-    FOREIGN KEY (`id_check`) REFERENCES `Check_list` (`id_check`);
-
 ALTER TABLE `Personal` ADD CONSTRAINT `Cargo_Personal` 
     FOREIGN KEY (`Id_cargo`) REFERENCES `Cargo` (`Id_cargo`);
 
@@ -328,3 +335,9 @@ ALTER TABLE `matricula_asistencia` ADD CONSTRAINT `asistencia_matricula_asistenc
 
 ALTER TABLE `pagos` ADD CONSTRAINT `matricula_pagos` 
     FOREIGN KEY (`id_matricula`) REFERENCES `matricula` (`id_matricula`);
+
+ALTER TABLE `Check_list_estudiante` ADD CONSTRAINT `Check_list_Check_list_estudiante` 
+    FOREIGN KEY (`id_check`) REFERENCES `Check_list` (`id_check`);
+
+ALTER TABLE `Check_list_estudiante` ADD CONSTRAINT `estudiante_Check_list_estudiante` 
+    FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id_estudiante`);
