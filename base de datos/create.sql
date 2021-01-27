@@ -5,7 +5,7 @@
 # Project name:                                                          #
 # Author:                                                                #
 # Script type:           Database creation script                        #
-# Created on:            2021-01-19 20:52                                #
+# Created on:            2021-01-23 21:32                                #
 # ---------------------------------------------------------------------- #
 
 
@@ -52,10 +52,11 @@ CREATE TABLE `Cargo` (
 # ---------------------------------------------------------------------- #
 
 CREATE TABLE `barrio` (
-    `localidad` VARCHAR(40) NOT NULL,
-    `upz` VARCHAR(40) NOT NULL,
-    `barrio` VARCHAR(40) NOT NULL,
-    CONSTRAINT `PK_barrio` PRIMARY KEY (`localidad`, `upz`, `barrio`)
+    `id_barrio` VARCHAR(40) NOT NULL,
+    `localidad` VARCHAR(40),
+    `upz` VARCHAR(40),
+    `barrio` VARCHAR(40),
+    CONSTRAINT `PK_barrio` PRIMARY KEY (`id_barrio`)
 );
 
 # ---------------------------------------------------------------------- #
@@ -107,7 +108,6 @@ CREATE TABLE `estudiante` (
     `telefono` VARCHAR(40) NOT NULL,
     `Celular` INTEGER NOT NULL,
     `fechaNacimiento` DATE NOT NULL,
-    `descuento` INTEGER,
     `expedicion` VARCHAR(40),
     `fotoCarnet` VARCHAR(40),
     `Estrato` INTEGER,
@@ -116,12 +116,11 @@ CREATE TABLE `estudiante` (
     `correo` VARCHAR(40),
     `ultimoCurso` INTEGER COMMENT 'ultimo curso aprobado',
     `telefonoAcudiente` INTEGER,
-    `year` DATE COMMENT 'en que año curso el ultimo curo',
+    `alloAprobado` DATE COMMENT 'en que año curso el ultimo curo',
     `observacion` TEXT,
     `id_colegio` INTEGER,
-    `localidad` VARCHAR(40),
-    `upz` VARCHAR(40),
-    `barrio` VARCHAR(40),
+    `id_barrio` VARCHAR(40),
+    `clave` VARCHAR(40),
     CONSTRAINT `PK_estudiante` PRIMARY KEY (`id_estudiante`)
 );
 
@@ -165,7 +164,7 @@ CREATE TABLE `egreso` (
 CREATE TABLE `matricula` (
     `id_matricula` INTEGER NOT NULL AUTO_INCREMENT,
     `id_estudiante` INTEGER,
-    `id_paquete` INTEGER,
+    `id_paquete` INTEGER NOT NULL,
     `Descuento` INTEGER,
     `observaciones` TEXT,
     CONSTRAINT `PK_matricula` PRIMARY KEY (`id_matricula`)
@@ -192,7 +191,8 @@ CREATE TABLE `Check_list_estudiante` (
     `id_check` INTEGER NOT NULL,
     `id_estudiante` INTEGER NOT NULL,
     `id_chec_estudiante` INTEGER NOT NULL AUTO_INCREMENT,
-    CONSTRAINT `PK_Check_list_estudiante` PRIMARY KEY (`id_check`, `id_estudiante`, `id_chec_estudiante`)
+    `estado` CHAR(1),
+    CONSTRAINT `PK_Check_list_estudiante` PRIMARY KEY (`id_chec_estudiante`)
 );
 
 # ---------------------------------------------------------------------- #
@@ -269,9 +269,9 @@ CREATE TABLE `asistencia` (
 # ---------------------------------------------------------------------- #
 
 CREATE TABLE `matricula_asistencia` (
+    `Id_grupo_A` INTEGER NOT NULL AUTO_INCREMENT,
     `id_matricula` INTEGER NOT NULL,
     `id_asistencia` INTEGER NOT NULL,
-    `Id_grupo_A` INTEGER NOT NULL AUTO_INCREMENT,
     CONSTRAINT `PK_matricula_asistencia` PRIMARY KEY (`Id_grupo_A`)
 );
 
@@ -283,7 +283,7 @@ ALTER TABLE `estudiante` ADD CONSTRAINT `colegio_estudiante`
     FOREIGN KEY (`id_colegio`) REFERENCES `colegio` (`id_colegio`);
 
 ALTER TABLE `estudiante` ADD CONSTRAINT `barrio_estudiante` 
-    FOREIGN KEY (`localidad`, `upz`, `barrio`) REFERENCES `barrio` (`localidad`,`upz`,`barrio`);
+    FOREIGN KEY (`id_barrio`) REFERENCES `barrio` (`id_barrio`);
 
 ALTER TABLE `Personal` ADD CONSTRAINT `Cargo_Personal` 
     FOREIGN KEY (`Id_cargo`) REFERENCES `Cargo` (`Id_cargo`);
